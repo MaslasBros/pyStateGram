@@ -55,4 +55,5 @@ class Tester:
         
         parsedDiagram["-[*]"](printer)("Start")
         parsedDiagram[parsedDiagram["startstate_state1"].source](printer)("From startstate_state1 transition source")
+        parsedDiagram["startstate_state1"].onTransition(printer)("From startstate_state1 onTransition")
         parsedDiagram["[*]-"](printer)("End")

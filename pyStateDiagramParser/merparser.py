@@ -6,10 +6,10 @@ patterns = [r'ss_\w+', r'state\s+"[^"]+"\s+as\s+(\w+)', r'(\w+)\s+:\s+"([^"]+)"'
             r'\[\*\]\s-->\s(\w+)', r'(\w+)\s-->\s\[\*\]'] #Start, End funcs
 
 class Transition:
-    def __init__(self, source, target, onTransition = None):
+    def __init__(self, source, target, onTransition):
         self.source = source
         self.target = target
-        self.onTransition = onTransition if onTransition is not None else onTransition
+        self.onTransition = onTransition
         pass
 
 def parseStateDiagram(diagram_str: str) -> dict:
@@ -28,7 +28,7 @@ def parseStateDiagram(diagram_str: str) -> dict:
         for match in matches:
             if pattern == patterns[3]: # Pattern for the Transition
                 source, target, description = match
-                transition = Transition(source, target)
+                transition = Transition(source, target, lambda x:x)
                 parsedPairs[description if len(description) > 0 else str.lower(source + '_' + target)] = transition
                 parsedPairs[source] = lambda x: x
                 parsedPairs[target] = lambda x: x
