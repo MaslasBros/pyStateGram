@@ -13,7 +13,8 @@ class Tester:
                 state4 --> endState: "State 4 to end state"
                 endState --> [*]
             """
-        #Test 
+
+        #Test   
         '''stateDiagram = """
             stateDiagram-v2
                 [*] --> ss_start
@@ -29,19 +30,16 @@ class Tester:
         '''stateDiagram = """
             stateDiagram-v2
                 [*] --> startFunc
-                ss_myStateId0
+                myStateId0
                 state "This is a description" as myStateId1
                 myStateId2 : "State 2 description"
 
-                st_myStateId0 --> myStateId1_concated
+                myStateId0 --> myStateId1_concated
                 myStateId1 --> myStateId2: "Transit to myState2 from myState1"
-                endFunc --> [*] 
+                endFunc --> [*]
             """'''
 
-        stateDiagramLines = stateDiagram.split('\n')[1:]
-        cleanedStateDiagram = '\n'.join(stateDiagramLines)
-
-        parsedDiagram = parser.parseStateDiagram(cleanedStateDiagram)
+        parsedDiagram = parser.parseStateDiagram(stateDiagram)
 
         #Tests - Debugs
         keys = list(parsedDiagram.keys())
@@ -49,11 +47,4 @@ class Tester:
         for i in keys:
             print(i)
 
-        def printer(x:set):
-            print(x)
-            pass
-        
-        parsedDiagram["-[*]"](printer)("Start")
-        parsedDiagram[parsedDiagram["startstate_state1"].source](printer)("From startstate_state1 transition source")
-        parsedDiagram["startstate_state1"].onTransition(printer)("From startstate_state1 onTransition")
-        parsedDiagram["[*]-"](printer)("End")
+        #parsedDiagram['--> [*]'](print)("Hi")
