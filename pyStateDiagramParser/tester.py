@@ -3,7 +3,7 @@ import merparser as parser
 class Tester:
     if __name__ == "__main__":
         #Test
-        stateDiagram = """
+        '''stateDiagram = """
             stateDiagram-v2
                 [*] --> startState
                 startState --> state1: Start to state 1
@@ -12,7 +12,7 @@ class Tester:
                 state3 --> state4: "State 3 to state 4"
                 state4 --> endState: "State 4 to end state"
                 endState --> [*]
-            """
+            """'''
 
         #Test   
         '''stateDiagram = """
@@ -38,6 +38,21 @@ class Tester:
                 myStateId1 --> myStateId2: "Transit to myState2 from myState1"
                 endFunc --> [*]
             """'''
+        
+        #Testing on unsupported states
+        stateDiagram = """
+            stateDiagram-v2
+                state fork_state <<fork>>
+                    [*] --> fork_state
+                    fork_state --> State2
+                    fork_state --> State3
+    
+                state join_state <<join>>
+                    State2 --> join_state
+                    State3 --> join_state
+                    join_state --> State4
+                    State4 --> [*]
+                """
 
         parsedDiagram = parser.parseStateDiagram(stateDiagram)
 
