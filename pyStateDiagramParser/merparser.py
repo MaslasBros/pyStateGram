@@ -3,11 +3,12 @@ import re
 # Regular expression pattern to match states, transitions and start/end symbols
 patterns = [r'\t\w+\n', r'state\s+"[^"]+"\s+as\s+(\w+)', r'(\w+)\s+:\s+"([^"]+)"', #States
             r'(\w+)\s-->\s(\w+)(?::\s*"([^"]+)"?)?', #Transitions
-            r'(\[\*\]\s-->)\s(\w+)', r'(\w+)\s(-->\s\[\*\])', #Start, End funcs
-            #Tests below here
-            r'state\s+(\w+)\s+\{(?:.*\n)*?\}', # Composite states
-            r'state\s(\w+)\s<<choice>>([\s\S\d\w]*)', #Choices
-            r'state\s(\w+)\s<<fork>>([\s\S\d\w]*)state\s(\w+)\s<<join>>([\s\S\d\w]*)']
+            r'(\[\*\]\s-->)\s(\w+)', r'(\w+)\s(-->\s\[\*\])'] #Start, End funcs
+
+
+unsupportedPatterns = [r'state\s+(\w+)\s+\{(?:.*\n)*?\s*\}', # Composite states
+            r'state\s(\w+)\s<<choice>>:([\s\S\d\w]*)pass', #Choices
+            r'state\s(\w+)\s<<fork>>:\s+([\s\S\d\w]*)pass\n+\s*state\s(\w+)\s<<join>>:\s+([\s\S\d\w]*)pass'] #Fork states
 
 startSymbol = '[*]->'
 endSymbol = '->[*]'
@@ -28,8 +29,13 @@ def parseStateDiagram(diagramStr: str) -> dict:
     The value is a Transition object.
     """
 
+    #Remove the stateDiagram-(v2) from the start of the state graph
     stateDiagramLines = diagramStr.strip().split('\n')[1:]
     cleanedStateDiagram = '\n'.join(stateDiagramLines)
+
+    #Remove the unsupported detected features
+    combinedUnsupported = '|'.join(unsupportedPatterns)
+    cleanedStateDiagram = re.sub(combinedUnsupported, '', diagramStr)
 
     parsedPairs = {}
 
@@ -46,21 +52,14 @@ def parseStateDiagram(diagramStr: str) -> dict:
             elif pattern == patterns[2]: # Pattern for state with description after :
                 source = match[0]
                 parsedPairs[source] = lambda x: x
-            elif pattern == patterns[4]: # Pattern fom start func
+            elif pattern == patterns[4]: # Pattern for start func
                 func = match[1]
                 parsedPairs[startSymbol] = lambda x: x
                 parsedPairs[func] = lambda x: x
-            elif pattern == patterns[5]: # Pattern fom end func
+            elif pattern == patterns[5]: # Pattern for end func
                 func = match[0]
                 parsedPairs[endSymbol] = lambda x: x
                 parsedPairs[func] = lambda x: x
-            #Tests below here
-            elif pattern == patterns[6]:
-                print("Composite states are not yet supported from the parser. Individual transitions and states will get parsed.")
-            elif pattern == patterns[7]:
-                print("Choice states are not yet supported from the parser. Individual transitions and states will get parsed.")
-            elif pattern == pattern[8]:
-                print("Fork states are not yet supported from the parser. Individual transitions and states will get parsed.")
             else: # Every other pattern can get directly created
                 parsedPairs[match] = lambda x: x
 
