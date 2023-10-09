@@ -66,7 +66,7 @@ class Tester:
                 state First {
                     [*] --> second
                     second --> [*]
-                }
+}
 
                 state if_state <<choice>>:
                 [*] --> IsPositive
