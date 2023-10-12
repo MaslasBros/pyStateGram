@@ -1,4 +1,4 @@
-import merparser as parser
+import pystategram as parser
 
 class Tester:
     if __name__ == "__main__":
