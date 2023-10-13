@@ -1,4 +1,5 @@
-import merparser as parser
+import asyncio
+from src import pystategram as parser
 
 class Tester:
     if __name__ == "__main__":
@@ -40,7 +41,7 @@ class Tester:
             """'''
         
         #Testing on unsupported states
-        stateDiagram = """
+        '''stateDiagram = """
             stateDiagram-v2
                 state fork_state <<fork>>
                     [*] --> fork_state
@@ -74,14 +75,47 @@ class Tester:
                 if_state --> False: if n < 0
                 if_state --> True : if n >= 0
                 pass
+                
+                _start_
+                    MyState1
+                    MyState2
+
+                    [*] --> Still
+                    Still --> [*]
+                    Still --> Moving: "Hiya There"
+                    Moving --> Still
+                    Moving --> Crash
+                    Crash --> [*]
+                """'''
+
+        #Test
+        stateDiagram = """
+                ---
+                title: Simple sample
+                ---
+                stateDiagram-v2
+                    2_start_
+                    MyState1
+                    MyState2
+
+                    [*] --> Still
+                    Still --> [*]
+                    Still --> Moving: "Hiya There"
+                    Moving --> Still
+                    Moving --> Crash
+                    Crash --> [*]
                 """
 
-        parsedDiagram = parser.parseStateDiagram(stateDiagram)
+        #Parsing
+        diagramPackage = parser.parseStateDiagram(stateDiagram)
 
         #Tests - Debugs
-        keys = list(parsedDiagram.keys())
+        for i in diagramPackage.states:
+            print('State: '+ i)
 
-        for i in keys:
-            print(i)
+        for i in diagramPackage.transitions:
+            print('Transition: '+ i)
 
-        #parsedDiagram['--> [*]'](print)("Hi")
+        print(diagramPackage.transitions['hiya_there'].source)
+        print(diagramPackage.transitions['hiya_there'].target)
+        diagramPackage.transitions['hiya_there'].onTransition(print)("Hello from transition")
