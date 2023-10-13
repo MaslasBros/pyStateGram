@@ -1,3 +1,4 @@
+import asyncio
 from src import pystategram as parser
 
 class Tester:
@@ -114,3 +115,7 @@ class Tester:
 
         for i in diagramPackage.transitions:
             print('Transition: '+ i)
+
+        print(diagramPackage.transitions['hiya_there'].source)
+        print(diagramPackage.transitions['hiya_there'].target)
+        diagramPackage.transitions['hiya_there'].onTransition(print)("Hello from transition")
