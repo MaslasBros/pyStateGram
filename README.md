@@ -85,6 +85,6 @@ This parser is compatible with any version equal or greater than [IronPython 3.4
 * IronPython dependencies 
   
   * [IronPython 3.4.1 site](https://ironpython.net/)
-  * [IronPython 3.4.1 repository](https://ironpython.net/)
+  * [IronPython 3.4.1 repository](https://github.com/IronLanguages/ironpython3)
 
 * [Mermaid JS 10.5.0](https://mermaid.js.org/syntax/stateDiagram.html)
