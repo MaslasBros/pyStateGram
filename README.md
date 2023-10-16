@@ -66,7 +66,7 @@ The following features are ignored by the parser whether they are included into 
 
 ### Unsupported Features
 
-The following features are **not yet** be supported by the parser. Presented, again, as stated in the [docs](https://mermaid.js.org/syntax/stateDiagram.html). The appropriate errors are thrown when anything related to these is detected from the parsing sequence.
+The following features are **not yet** supported by the parser. Presented, again, as stated in the [docs](https://mermaid.js.org/syntax/stateDiagram.html). The appropriate errors are thrown when anything related to these is detected from the parsing sequence.
 
 * [Composite states](https://mermaid.js.org/syntax/stateDiagram.html#composite-states)
 
