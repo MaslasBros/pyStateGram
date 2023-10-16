@@ -9,6 +9,7 @@
   * [Start and End](#start-and-end)
 * [Ignored Features](#ignored-features)
 * [Unsupported Features](#unsupported-features)
+* [Usage](#usage)
 * [Compatibility](#compatibility)
 * [Dependencies](#dependencies)
 
@@ -73,6 +74,13 @@ The following features are **not yet** supported by the parser. Presented, again
 * [Choice](https://mermaid.js.org/syntax/stateDiagram.html#choice)
 
 * [Forks](https://mermaid.js.org/syntax/stateDiagram.html#forks)
+
+## Usage
+
+* Download the repository *prs* files into your project.
+* Import the *pystategram* script into your needed file.
+* Use the *parseStateDiagram* method by passing in the mermaid js state diagram of your choice.
+* In return, you get an object which contains **two dictionaries**, one with the **States** and one with the **Transitions**.
 
 ## Compatibility
 
