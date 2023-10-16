@@ -1,5 +1,4 @@
-import asyncio
-from src import pystategram as parser
+from prs import pystategram as parser
 
 class Tester:
     if __name__ == "__main__":
