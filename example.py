@@ -1,4 +1,4 @@
-from prs import pystategram as parser
+import prs.pystategram as parser
 
 class Tester:
     if __name__ == "__main__":
