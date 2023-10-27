@@ -4,7 +4,7 @@ from .parserLib.pyStateClasses import DiagramPackage
 from .parserLib.pyStateClasses import Transition
 from .parserLib.pyStatePatterns import Patterns
 
-def detectUnsupportedFeatures(diagramStr: str):
+def _detectUnsupportedFeatures(diagramStr: str):
     """
     Detects the unusupported features in the passed state diagram.\n
     If any is found, its appropriate error is immediately thrown in the console.
@@ -16,7 +16,7 @@ def detectUnsupportedFeatures(diagramStr: str):
 
     pass
 
-def createTransition(source: str, target:str, description:str) -> (str, Transition):
+def _createTransition(source: str, target:str, description:str) -> (str, Transition):
     """
     Creates a Transition instance and the correcty formatted description of it.\n
     Returns a Tuple containing the created Transition instance and the formatted description.\n
@@ -28,7 +28,7 @@ def createTransition(source: str, target:str, description:str) -> (str, Transiti
 
     return (description, tempTransition)
 
-def addToStates(statesDict: dict, stateKey:str, item) -> dict:
+def _addToStates(statesDict: dict, stateKey:str, item) -> dict:
 
     if stateKey == Patterns.startSymbol or stateKey == Patterns.endSymbol:
         raise KeyError('Key: \'' + stateKey + '\'.You can\'t use ' + Patterns.startSymbol + ' and ' + Patterns.endSymbol + ' as state IDs.')
@@ -50,7 +50,7 @@ def parseStateDiagram(diagramStr: str) -> DiagramPackage:
     cleanedStateDiagram = '\n'.join(stateDiagramLines)
 
     #Raise appropriate events if ANY unsupported feature gets detected in the diagram.
-    detectUnsupportedFeatures(diagramStr)
+    _detectUnsupportedFeatures(diagramStr)
 
     states = {}
     transitions = {}
@@ -60,30 +60,30 @@ def parseStateDiagram(diagramStr: str) -> DiagramPackage:
         for match in matches:
             if pattern == Patterns.patterns[3]: # Pattern for the Transition
                 source, target, description = match[0:3]
-                tempTrans = createTransition(source, target, description)
+                tempTrans = _createTransition(source, target, description)
                 transitions[tempTrans[0]] = tempTrans[1]
                 # The two lines below here create two separate entries for each transition method in case they are not parsed elsewere.
-                states = addToStates(states, source, lambda x: x)
-                states = addToStates(states, target, lambda x: x)
+                states = _addToStates(states, source, lambda x: x)
+                states = _addToStates(states, target, lambda x: x)
             elif pattern == Patterns.patterns[2]: # Pattern for state with description after :
                 source = match[0]
-                states = addToStates(states, source, lambda x: x)
+                states = _addToStates(states, source, lambda x: x)
 
             elif pattern == Patterns.patterns[4]: # Pattern for start func
                 source = Patterns.startSymbol
                 target = match[1]
-                tempTrans = createTransition(source, target, '')
+                tempTrans = _createTransition(source, target, '')
                 transitions[tempTrans[0]] = tempTrans[1]
                 states[Patterns.startSymbol] = lambda x: x
                 states[target] = lambda x: x
             elif pattern == Patterns.patterns[5]: # Pattern for end func
                 source = Patterns.endSymbol
                 target = match[0]
-                tempTrans = createTransition(target, source, '')
+                tempTrans = _createTransition(target, source, '')
                 transitions[tempTrans[0]] = tempTrans[1]
                 states[Patterns.endSymbol] = lambda x: x
                 states[target] = lambda x: x
             else: # Every other pattern can get directly created
-                states = addToStates(states, match, lambda x: x)
+                states = _addToStates(states, match, lambda x: x)
 
     return DiagramPackage(states, transitions)

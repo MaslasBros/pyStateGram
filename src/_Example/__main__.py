@@ -4,7 +4,7 @@ import os
 src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(src_dir)
 
-import prs.pystategram as parser
+from src.prs.pystategram import parseStateDiagram
 
 class Tester:
     if __name__ == "__main__":
@@ -112,7 +112,7 @@ class Tester:
                 """
 
         #Parsing
-        diagramPackage = parser.parseStateDiagram(stateDiagram)
+        diagramPackage = parseStateDiagram(stateDiagram)
 
         #Tests - Debugs
         for i in diagramPackage.states:
