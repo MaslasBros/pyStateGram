@@ -1,8 +1,7 @@
 import re
 
-from .parserLib.pyStateClasses import DiagramPackage
-from .parserLib.pyStateClasses import Transition
-from .parserLib.pyStatePatterns import Patterns
+from .parserLib.pyStateClasses import *
+from .parserLib.pyStatePatterns import *
 
 def _detectUnsupportedFeatures(diagramStr: str):
     """
