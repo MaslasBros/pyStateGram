@@ -94,7 +94,7 @@ class Tester:
                 """'''
 
         #Test
-        stateDiagram = """
+        '''stateDiagram = """
                 ---
                 title: Simple sample
                 ---
@@ -109,18 +109,40 @@ class Tester:
                     Moving --> Still
                     Moving --> Crash
                     Crash --> [*]
+                """'''
+        
+        stateDiagram = """
+                ---
+                title: Simple sample
+                dasasd
+                adas
+                da
+            
+                ---
+                stateDiagram-v2
+                    Idle
+                    Load
+                    Release
+                    Aim
+                    Fire
+                    
+                    Idle --> Hello_1
+                    Idle --> Release
+                    Load --> Aim
+                    Aim --> Fire
+                    Fire --> Hello_2
                 """
 
         #Parsing
         diagramPackage = parseStateDiagram(stateDiagram)
 
         #Tests - Debugs
-        for i in diagramPackage.states:
+        """ for i in diagramPackage.states:
             print('State: '+ i)
 
-        for i in diagramPackage.transitions:
-            print('Transition: '+ i)
+        for i in diagramPackage.transitions.items():
+            print('Transition: '+ str(i)) """
 
-        print(diagramPackage.transitions['hiya_there'].source)
+        """ print(diagramPackage.transitions['hiya_there'].source)
         print(diagramPackage.transitions['hiya_there'].target)
-        diagramPackage.transitions['hiya_there'].onTransition(print)("Hello from transition")
+        diagramPackage.transitions['hiya_there'].onTransition(print)("Hello from transition") """
