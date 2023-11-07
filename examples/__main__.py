@@ -126,7 +126,7 @@ class Tester:
                     Aim
                     Fire
                     
-                    Idle --> Hello_1
+                    Idle --> Hello_1: "transitHello"
                     Idle --> Release
                     Load --> Aim
                     Aim --> Fire
@@ -137,11 +137,11 @@ class Tester:
         diagramPackage = parseStateDiagram(stateDiagram)
 
         #Tests - Debugs
-        """ for i in diagramPackage.states:
+        for i in diagramPackage.states:
             print('State: '+ i)
 
         for i in diagramPackage.transitions.items():
-            print('Transition: '+ str(i)) """
+            print('Transition: '+ str(i))
 
         """ print(diagramPackage.transitions['hiya_there'].source)
         print(diagramPackage.transitions['hiya_there'].target)
