@@ -54,6 +54,8 @@ stateDiagram-v2
 - Reference to the target state function.
 - Store a function that will be executed for the transition.
 
+> Note: For the *transition descritpion* to get parsed correctly, it must be of the following format: *stateA --> stateB: "description"*
+
 #### [Start and End](https://mermaid.js.org/syntax/stateDiagram.html#start-and-end)
 
 The same functionality as States but for the default *_start_* and *_end_* functions which are unique and cannot get passed as stateIDs.
