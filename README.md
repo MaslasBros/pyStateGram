@@ -10,6 +10,7 @@
 * [Ignored Features](#ignored-features)
 * [Unsupported Features](#unsupported-features)
 * [Usage](#usage)
+* [Examples](#example)
 * [Compatibility](#compatibility)
 * [Dependencies](#dependencies)
 
@@ -47,6 +48,12 @@ stateDiagram-v2
     note left of s2 : s1_s2
 ```
 
+...the Transition object should contain as members...
+
+- Reference to the source state function.
+- Reference to the target state function.
+- Store a function that will be executed for the transition.
+
 #### [Start and End](https://mermaid.js.org/syntax/stateDiagram.html#start-and-end)
 
 The same functionality as States but for the default *_start_* and *_end_* functions which are unique and cannot get passed as stateIDs.
@@ -77,10 +84,14 @@ The following features are **not yet** supported by the parser. Presented, again
 
 ## Usage
 
-* Download the repository *prs* files into your project.
+* Download the repository *pyStateGram* files into your project.
 * Import the *pystategram* script into your needed file.
-* Use the *parseStateDiagram* method by passing in the mermaid js state diagram of your choice.
+* Use the *parseStateDiagram* method by passing in the Mermaid JS state diagram of your choice.
 * In return, you get an object which contains **two dictionaries**, one with the **States** and one with the **Transitions**.
+
+## Examples
+
+An example script with all available features of the parser is located inside the repository on the *examples* folder.
 
 ## Compatibility
 
