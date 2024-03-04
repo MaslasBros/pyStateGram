@@ -1,10 +1,4 @@
-import sys
-import os
-
-src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(src_dir)
-
-from pyStateGram.pystategram import *
+from pyStateGram.pystategram import * 
 
 class Tester:
     if __name__ == "__main__":
