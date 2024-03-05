@@ -1,7 +1,9 @@
 import re
 
-from .parserLib.pyStateClasses import *
-from .parserLib.pyStatePatterns import *
+from .parserLib import *
+
+# The versions of state diagrams to exclude from the state graph
+_excludedVersions = ['stateDiagram-v2', 'stateDiagram']
 
 def _detectUnsupportedFeatures(diagramStr: str):
     """
@@ -27,8 +29,7 @@ def _createTransition(source: str, target:str, description:str) -> (str, Transit
 
     return (description, tempTransition)
 
-def _addToStates(statesDict: dict, stateKey:str, item) -> dict:
-
+def _addToStates(statesDict: dict, stateKey:str, item) -> dict:   
     if stateKey == Patterns.startSymbol or stateKey == Patterns.endSymbol:
         raise KeyError('Key: \'' + stateKey + '\'.You can\'t use ' + Patterns.startSymbol + ' and ' + Patterns.endSymbol + ' as state IDs.')
 
@@ -38,17 +39,26 @@ def _addToStates(statesDict: dict, stateKey:str, item) -> dict:
 
 def parseStateDiagram(diagramStr: str) -> DiagramPackage:
     """
-    Parses the passed mermaid.js and returns a n object containing the two dictionaries of States and Transitions.\n
+    Parses the passed mermaid.js and returns an object containing the two dictionaries of States and Transitions.\n
     Checks for unsupported features are also done through this method.\n
     The mermaid transitions are stored as a combination of the two state ID names as a key if there is not transition description
     else the key is the transition description.\n
     """
 
-    #Remove the stateDiagram-(v2) from the start of the state graph
-    stateDiagramLines = diagramStr.strip().split('\n')[1:]
-    cleanedStateDiagram = '\n'.join(stateDiagramLines)
+    #Find the line index of stateDiagram-v2 or stateDiagram
+    stateDiagramLines = diagramStr.split('\n')
+    stateDiagramLines = [line.strip() for line in stateDiagramLines]
 
-    #Raise appropriate events if ANY unsupported feature gets detected in the diagram.
+    lnIdx = -1
+    for idx, line in enumerate(stateDiagramLines):
+        if line in _excludedVersions:
+            lnIdx = idx + 1
+            break
+    
+    #Keep every line after the found line index of stateDiagram-v2 or stateDiagram
+    cleanedStateDiagram = '\n'.join(stateDiagramLines[lnIdx:])
+
+    #Raise appropriate errors if ANY unsupported feature gets detected in the diagram.
     _detectUnsupportedFeatures(diagramStr)
 
     states = {}
