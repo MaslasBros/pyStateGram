@@ -1,14 +1,20 @@
 import re
 
-from .parserLib import *
+from . import pyStatePatterns as Patterns
+from .pyStateClasses import *
 
-# The versions of state diagrams to exclude from the state graph
 _excludedVersions = ['stateDiagram-v2', 'stateDiagram']
+"""The versions of state diagrams to exclude from the state graph"""
 
 def _detectUnsupportedFeatures(diagramStr: str):
     """
-    Detects the unusupported features in the passed state diagram.\n
-    If any is found, its appropriate error is immediately thrown in the console.
+    Detects the unusupported features in the passed state diagram.
+
+    Args:
+        diagramStr (:class:`str`): The Mermaid JS diagram to parse
+
+    Raises:
+        (:class:`SyntaxError`): If any unsupported pattern is detected.
     """
 
     for ftr, msg in Patterns.unsupportedPatterns:
@@ -17,19 +23,41 @@ def _detectUnsupportedFeatures(diagramStr: str):
 
     pass
 
-def _createTransition(source: str, target:str, description:str) -> (str, Transition):
+def _createTransition(source: str, target:str, description:str) -> (str, Transition): 
     """
-    Creates a Transition instance and the correcty formatted description of it.\n
-    Returns a Tuple containing the created Transition instance and the formatted description.\n
-    Item1: Description
-    Item2: Transition\n
+    Creates a Transition instance and the correcty formatted description of it.
+    
+    Args:
+        source (:class:`str`): The source state name.
+        target (:class:`str`): The target state name.
+        description (:class:`str`): The description of the transition.
+
+    Returns:
+        Tuple containing the created Transition instance and the formatted description.
+        Item1: Description
+        Item2: Transition
     """
     tempTransition = Transition(source, target, lambda x:x)
     description = re.sub(r'[^a-zA-Z0-9_]+',  '_', description).replace(' ','').lower() if len(description) > 0 else str.lower(source + '_' + target) 
 
     return (description, tempTransition)
 
-def _addToStates(statesDict: dict, stateKey:str, item) -> dict:   
+def _addToStates(statesDict: dict, stateKey:str, item) -> dict:
+    """
+    Adds the passed state name and item as a key-value pair in the passed dictionary.
+
+    Args:
+        statesDict (:class:`dict`): The dictionary to populate.
+        stateKey (:class:`str`): The key string.
+        item (:class:`func`): The value to associate with the key.
+
+    Returns:
+        The updated dictionary.
+
+    Raises:
+        (:class:`KeyError`): If any unsupported symbol is detected as a state ID
+    """
+    
     if stateKey == Patterns.startSymbol or stateKey == Patterns.endSymbol:
         raise KeyError('Key: \'' + stateKey + '\'.You can\'t use ' + Patterns.startSymbol + ' and ' + Patterns.endSymbol + ' as state IDs.')
 
@@ -39,10 +67,22 @@ def _addToStates(statesDict: dict, stateKey:str, item) -> dict:
 
 def parseStateDiagram(diagramStr: str) -> DiagramPackage:
     """
-    Parses the passed mermaid.js and returns an object containing the two dictionaries of States and Transitions.\n
-    Checks for unsupported features are also done through this method.\n
+    Parses the passed mermaid.js and returns an object containing the two dictionaries of States and Transitions.
+
+    Checks for unsupported features are also done through this method.
+
     The mermaid transitions are stored as a combination of the two state ID names as a key if there is not transition description
-    else the key is the transition description.\n
+    else the key is the transition description.
+
+    Args:
+        diagramStr (:class:`str`): The diagram to parse
+
+    Returns:
+        The pyFsm.pyStateClasses.DiagramPackage containing the parsed states and transitions.
+    
+    Raises:
+        (:class:`SyntaxError`): If any unsupported pattern is detected.
+        (:class:`KeyError`): If any unsupported symbol is detected as a state ID
     """
 
     #Find the line index of stateDiagram-v2 or stateDiagram

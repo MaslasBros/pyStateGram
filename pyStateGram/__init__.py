@@ -1,3 +1,4 @@
 # This directory is a Python package.
-from .pystategram import *
-from .parserLib import *
+from . import pystategram # noqa
+from . import pyStateClasses # noqa
+from . import pyStatePatterns # noqa
